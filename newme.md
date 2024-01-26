@@ -45,7 +45,7 @@ In this project, we embark on a journey to develop a stand-alone, interactive ap
 ---
 
 ## Contact Information
-For any inquiries or further information, please reach out to the team members through their university email addresses.
+For any inquiries or further information, please reach out to the team members through their GitHub accounts.
 
 ---
 
