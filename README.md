@@ -14,4 +14,4 @@
 > - Develop Strong Communication Skills, Team Bonding, and Leadership.
 > - Strengthen Customer Representative Satisfaction Skills.
 > - Develop Further Insight on Real World *jobs*.
-> - Stengthen Programming, Designing, Analytic, and Software Skills.
+> - Strengthen Programming, Designing, Analytic, and Software Skills.
