@@ -3,7 +3,7 @@
 #### - CMPS 4113 - Software Egnineering Team Project.
 #### - Members: Yoseph Helal, Miklos Moreno, Brett Smith, David Reyes-coy.
 
-## Description: Team will be presented with one or more customer representative/s.
+## Description: Team will be presented with one or more customer representative(s).
 #### > - *Develop a Stand-Alone Interactive Application with a User-Friendly GUI.*
 #### > - *Involves Data Storage and Data Collection.*
 #### > - *Involves Visualization of Measures Collected vs Targets.*
