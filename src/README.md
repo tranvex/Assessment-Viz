@@ -18,6 +18,12 @@ To set up the project development environment, follow these steps:
 
 ### Activating the Virtual Environment
 
+To activate the virtual environment, run the following command in your terminal:
+
+Make sure you are in the root directory of the project before running the following commands. 
+
+- **C:\path\to\Assessment-Viz/ **
+
 - **On Windows:**
   ```bash
   .\venv\Scripts\activate
