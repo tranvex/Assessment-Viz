@@ -14,6 +14,19 @@ Before you begin, ensure you have met the following requirements:
 
 You can use whatever text editor or IDE you prefer. However, remember to pull from the main branch before you start working on the project.
 
+### Creating a Virtual Environment
+
+1. Open your terminal (Command Prompt, PowerShell, or Bash).
+2. Navigate to the project's root directory:
+   ```bash
+   cd path/to/your/project
+   ```
+3. Create a virtual environment named `venv` (or any other name you prefer):
+   ```bash
+   python -m venv venv
+   ```
+   This command creates a new directory `venv` in your project directory, containing the virtual environment.
+
 ### Activating the Virtual Environment
 
 To activate the virtual environment, run the following command in your terminal:
