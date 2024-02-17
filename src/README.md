@@ -12,7 +12,7 @@ Before you begin, ensure you have met the following requirements:
 
 ## Setting Up Your Development Environment
 
-To set up the project development environment, follow these steps:
+You can use whatever text editor or IDE you prefer. However, remember to pull from the main branch before you start working on the project.
 
 ### Activating the Virtual Environment
 
