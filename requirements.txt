@@ -4,10 +4,3 @@ matplotlib
 PyQt5
 pyinstaller
 csv
-
-# optional VScode extension:
-- Rainbow csv
-- markdown all in one
-- vscode pdf
-- gitblame
-- coderunner

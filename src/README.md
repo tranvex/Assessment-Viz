@@ -10,6 +10,13 @@ Before you begin, ensure you have met the following requirements:
 
 - Python 3.x installed on your system. You can download Python from [python.org](https://www.python.org/downloads/).
 
+# optional VScode extension:
+- Rainbow csv
+- markdown all in one
+- vscode pdf
+- gitblame
+- coderunner
+
 ## Setting Up Your Development Environment
 
 You can use whatever text editor or IDE you prefer. However, remember to pull from the main branch before you start working on the project.
