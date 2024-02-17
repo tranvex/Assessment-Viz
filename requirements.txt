@@ -7,3 +7,5 @@ pyinstaller
 - [pandas](https://pandas-xlsxwriter-charts.readthedocs.io/)
 - [myplotlib](https://www.geeksforgeeks.org/plot-data-from-excel-file-in-matplotlib-python/)
 - [csvPlot](https://www.youtube.com/watch?v=y43_o2OnI68)
+- [matplotForum](https://www.w3schools.com/python/matplotlib_plotting.asp)
+- [pandasForum](https://www.w3schools.com/python/pandas/default.asp)
