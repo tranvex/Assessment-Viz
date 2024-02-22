@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (
     QAction,
     QLabel,
     QFileDialog,
+    QDesktopWidget,
 )
 import os
 from converter import (
@@ -20,11 +21,27 @@ from converter import (
 
 
 # MainWindow class inherits from QMainWindow
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
-        super().__init__()  # Call the constructor of the parent class
-        self.setWindowTitle("Visualization of Assessment Data")  # Set the window title
-        self.setGeometry(100, 100, 600, 400)  # Set the window geometry
+        super().__init__()
+
+        # Get screen size
+        primary_screen = QApplication.screens()[0]
+        screen_resolution = primary_screen.geometry()
+        screen_width, screen_height = (
+            screen_resolution.width(),
+            screen_resolution.height(),
+        )
+
+        # Set window size to 80% of the screen size
+        self.setGeometry(0, 0, int(screen_width * 0.6), int(screen_height * 0.6))
+
+        # Center the window on the screen
+        self.move(
+            (screen_width - self.width()) // 2, (screen_height - self.height()) // 2
+        )
 
         # Set window icon
         script_dir = os.path.dirname(
