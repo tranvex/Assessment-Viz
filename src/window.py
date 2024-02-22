@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        self.setWindowTitle("Data Visualization")  # Set the window title
+        self.setWindowTitle("Assessment Data Visualization")  # Set the window title
         
         set_custom_palette(self)  # Set the custom palette
         set_stylesheet(self)  # Set the stylesheet
