@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -7,17 +7,18 @@ from PyQt5.QtWidgets import (
     QWidget,
     QSpacerItem,
     QSizePolicy,
-    QMenuBar,
-    QMenu,
-    QAction,
-    QLabel,
     QFileDialog,
-    QDesktopWidget,
 )
 import os
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from converter import (
     xls_to_csv,
 )  # Importing the xls_to_csv function from converter module
+from menu_bar import (
+    create_menu,
+)  # Importing the create_menu function from menu_bar module
+from graph import create_graph  # Importing the create_graph function from graph module
+from styling import set_custom_palette, set_stylesheet  # Importing the set_custom_palette and set_stylesheet functions from styling module
 
 
 # MainWindow class inherits from QMainWindow
@@ -26,6 +27,11 @@ from converter import (
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        
+        self.setWindowTitle("Data Visualization")  # Set the window title
+        
+        set_custom_palette(self)  # Set the custom palette
+        set_stylesheet(self)  # Set the stylesheet
 
         # Get screen size
         primary_screen = QApplication.screens()[0]
@@ -42,6 +48,11 @@ class MainWindow(QMainWindow):
         self.move(
             (screen_width - self.width()) // 2, (screen_height - self.height()) // 2
         )
+        
+        #set window color
+        palette = QPalette()
+        palette.setColor(QPalette.Window, QColor(211, 211, 211))
+        self.setPalette(palette)
 
         # Set window icon
         script_dir = os.path.dirname(
@@ -65,26 +76,31 @@ class MainWindow(QMainWindow):
         layout.addItem(spacer)  # Add the spacer to the layout
 
         # Toggle button
-        toggle_button = QPushButton("Toggle Night Mode", self)  # Create a QPushButton
+        toggle_button = QPushButton("Graph", self)  # Create a QPushButton
         toggle_button.setFixedHeight(20)  # Set the height of the button
         toggle_button.clicked.connect(
-            self.toggle_night_mode
+            self.show_graph
         )  # Connect the button's clicked signal to the toggle_night_mode slot
         layout.addWidget(toggle_button)  # Add the button to the layout
 
-        # Menu bar
-        menu_bar = self.menuBar()  # Get the menu bar
-        file_menu = menu_bar.addMenu("File")  # Add a "File" menu to the menu bar
+        menu_bar = create_menu(self)  # Create the menu bar
+        self.setMenuBar(menu_bar)  # Set the menu bar
 
-        # Input file action
-        input_action = QAction("Select File", self)  # Create a QAction
-        input_action.triggered.connect(
-            self.open_file_dialog
-        )  # Connect the action's triggered signal to the open_file_dialog slot
-        file_menu.addAction(input_action)  # Add the action to the file menu
+    def show_graph(self):
+        # Create the graph
+        figure = create_graph()
 
-        self.night_mode = False  # Initialize night_mode to False
-        self.update_style()  # Call the update_style method
+        # Create a canvas to display the graph
+        canvas = FigureCanvas(figure)
+
+        # Create a layout and add the canvas to it
+        layout = QVBoxLayout()
+        layout.addWidget(canvas)
+
+        # Create a widget, set its layout to the layout containing the canvas, and set it as the central widget
+        widget = QWidget()
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
 
     # Method to open a file dialog
     def open_file_dialog(self):
@@ -99,31 +115,3 @@ class MainWindow(QMainWindow):
         )  # Open a file dialog
         if file_name:  # If a file was selected
             xls_to_csv(file_name)  # Call the xls_to_csv function with the selected file
-
-    # Method to toggle night mode
-    def toggle_night_mode(self):
-        self.night_mode = not self.night_mode  # Toggle the value of night_mode
-        self.update_style()  # Call the update_style method
-
-    # Method to update the style
-    def update_style(self):
-        if self.night_mode:  # If night_mode is True
-            # Apply night mode stylesheet
-            self.setStyleSheet(
-                """
-                QMainWindow { background-color: #2c3e50; }
-                QPushButton { background-color: #34495e; color: #ecf0f1; border-radius: 5px; }
-                QMenuBar { background-color: #34495e; }  # Less dark color for the menu bar
-                QMenuBar::item { color: #ecf0f1; }  # White color for the menu items
-                """
-            )
-        else:  # If night_mode is False
-            # Apply day mode stylesheet
-            self.setStyleSheet(
-                """
-                QMainWindow { background-color: #ecf0f1; }
-                QPushButton { background-color: #bdc3c7; color: #2c3e50; border-radius: 5px;}
-                QMenuBar { background-color: #c0c0c0; }  # Darker color for the menu bar
-                QMenuBar::item { color: #2c3e50; }  # Dark color for the menu items
-                """
-            )
