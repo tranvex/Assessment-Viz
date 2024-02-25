@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
             os.path.abspath(__file__)
         )  # Get the directory of the current script
         icon_path = os.path.join(
-            script_dir, "assets", "s_logo.png"
+            script_dir, "assets", "s_logo.ico"
         )  # Get the path to the icon
         self.setWindowIcon(QIcon(icon_path))  # Set the window icon
 

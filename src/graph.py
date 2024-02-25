@@ -37,3 +37,26 @@ def create_graph():
 def show_graph(fig):
     # Show the graph
     fig.show()
+
+
+
+
+
+'''
+-> Should probably add a way to interact with the files being read in.
+-> Of course when graphing you may run into the error: "you're trying to graph 
+-> a non numerical value (something along those liens)" possibly it complaining about
+-> converting a string to int.
+
+-> how to read a file -> example = pd.read("filename or filepath")
+-> is may depend on how miklos is reading the files. It is possible that you just call his file attribute <-
+
+-> To handle the error, maybe specify the columns you want to graph like
+-> df ['columnName'] = pd.scatter(df['columnName'], label = 'whatever you want to call it')
+-> keep in mind there are a number of different graphs, scatter, plot, bar. 
+-> so you can do pd.plot as well. 
+
+-> .show() is how we call our graph to be shown. without it nothing would appear.
+-> .grid() will add grid lines to the graph.
+-> marker = 'o' will add dots for each point if we do a line graph. 
+'''
