@@ -4,3 +4,5 @@ matplotlib
 PyQt5
 pyinstaller
 csv
+pyarrow
+openpyxl
