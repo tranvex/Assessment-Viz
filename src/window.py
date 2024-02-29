@@ -18,6 +18,7 @@ from menu_bar import create_menu
 from graph import create_graph
 from styling import set_custom_palette, set_stylesheet
 
+
 # MainWindow class inherits from QMainWindow
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -73,9 +74,7 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(layout)
 
         # Add a vertical spacer
-        spacer = QSpacerItem(
-            20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding
-        )
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(spacer)
 
         # Toggle button
@@ -126,8 +125,8 @@ class MainWindow(QMainWindow):
         figure = create_graph(
             sheet_name,
             os.path.join(
-                self.output_directory, # type: ignore
-                f'{os.path.splitext(os.path.basename(self.file_name))[0]}_{sheet_name}.csv', # type: ignore
+                self.output_directory,  # type: ignore
+                f"{os.path.splitext(os.path.basename(self.file_name))[0]}_{sheet_name}.csv",  # type: ignore
             ),
         )
 
@@ -163,24 +162,25 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(None)
         self.setWindowTitle("Assessment Data Visualization")
 
-
     def open_file_dialog(self):
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.ReadOnly
             file_name, _ = QFileDialog.getOpenFileName(
                 self,
-                'Select Excel File',
-                '',
-                'Excel Files (*.xls *.xlsx)',
+                "Select Excel File",
+                "",
+                "Excel Files (*.xls *.xlsx)",
                 options=options,
             )
             # Specify file output directory
-            project_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+            project_directory = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), "..")
+            )
             output_directory = project_directory
 
             # Print selected file name for debug
-            print(f'Selected file: {file_name}')
+            print(f"Selected file: {file_name}")
 
             if file_name:
                 xls_to_csv(file_name, output_directory)
@@ -189,4 +189,4 @@ class MainWindow(QMainWindow):
 
             self.show_graph()
         except Exception as e:
-            print(f'An error occurred: {e}')
+            print(f"An error occurred: {e}")

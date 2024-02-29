@@ -6,7 +6,7 @@ def create_menu(window):
     menu_bar = QMenuBar()  # Get the menu bar
 
     menu_bar.setStyleSheet("font-size: 14px;")
-    
+
     file_menu = QMenu("File", menu_bar)  # Create a "File" menu
     menu_bar.addMenu(file_menu)  # Add the "File" menu to the menu bar
 
