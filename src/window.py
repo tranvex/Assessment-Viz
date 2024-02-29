@@ -32,13 +32,13 @@ class MainWindow(QMainWindow):
         set_custom_palette(self)  # Set the custom palette
         set_stylesheet(self)  # Set the stylesheet
 
-        self.layout = QVBoxLayout()
+        self.main_layout = QVBoxLayout()
 
         # Button to exit the graph
         exit_button = QPushButton("Exit Graph", self)
         exit_button.setFixedHeight(20)
         exit_button.clicked.connect(self.exit_graph)
-        self.layout.addWidget(exit_button)
+        self.main_layout.addWidget(exit_button)
 
         # Get screen size
         primary_screen = QApplication.screens()[0]
@@ -126,8 +126,8 @@ class MainWindow(QMainWindow):
         figure = create_graph(
             sheet_name,
             os.path.join(
-                self.output_directory,
-                f'{os.path.splitext(os.path.basename(self.file_name))[0]}_{sheet_name}.csv',
+                self.output_directory, # type: ignore
+                f'{os.path.splitext(os.path.basename(self.file_name))[0]}_{sheet_name}.csv', # type: ignore
             ),
         )
 
