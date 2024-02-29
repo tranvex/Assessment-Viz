@@ -15,7 +15,7 @@ def create_graph(sheet_name, csv_file):
 
         # Plotting a bar graph
         plt.figure(figsize=(8, 6))
-        plt.bar(data[category_column], data[value_column])
+        plt.scatter(data[category_column], data[value_column])
         plt.xlabel(category_column)
         plt.ylabel(value_column)
         plt.title(f"Graph for {sheet_name}")
