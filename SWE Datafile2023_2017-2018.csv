@@ -1,0 +1,21 @@
+Measures,# students,#students meeting target,Target,% students met target,Description
+S1M1T1,26,,0.5,,Group avg > 50%
+S1M1T2,26,21.0,1.0,0.8076923076923077,80% of students >= 30 percentile
+S1M2T1,114,79.0,0.9,0.6929824561403509,recall most steps in design/algorithm
+S1M2T2,114,,0.8,,recall all steps in design/algorithm
+S1M3T1,210,,0.8,,score 7-10
+S1M3T2,210,105.0,0.5,0.5,score 8-10
+S1M14T1,143,101.0,0.7,0.7062937062937062,good or excellent   in improvement
+S2M4T1,25,25.0,1.0,1.0,improve or achieve 5 on slides
+S2M4T2,25,22.0,1.0,0.88,improve or achieve 5 on style
+S2M5T1,0,,0.8,,10+ on combined score
+S2M6T1,0,,0.8,,score 7-10
+S2M7T1,0,,0.8,,presentations 80-100%
+S2M14T1,44,34.0,0.7,0.7727272727272727,good or excellent   in improvement
+S3M8T1,21,17.0,0.9,0.8095238095238095,contribute fairly to projects
+S3M9T1,21,13.0,0.9,0.6190476190476191,contribute with score > 85%
+S3M10T1,0,,0.8,,contribute 30-50% with partner
+S3M14T1,0,,0.7,,good or excellent in improbement
+S4M11T1,26,18.0,0.75,0.6923076923076923,score 4-5
+S4M12T1,0,,0.75,,score 4-5
+S4M14T1,41,36.0,0.7,0.8780487804878049,good or excellent   in improvement
