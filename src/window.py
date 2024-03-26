@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
         # Call the parent class's __init__ method
         super().__init__()
         # Set the window title
-        self.setWindowTitle("WonderWisdom")
+        self.setWindowTitle("WisdomWaves")
         # Set the window geometry: x, y, width, height
         self.setGeometry(100, 100, 800, 600)
         # Set the window icon, the path is relative to this file's location
