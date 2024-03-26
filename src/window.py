@@ -8,7 +8,7 @@ from excel_loader import ExcelLoader
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Advanced Application")
+        self.setWindowTitle("WonderWisdom")
         self.setGeometry(100, 100, 800, 600)
         self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico")))
         self.initUI()
