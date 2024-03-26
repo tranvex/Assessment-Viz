@@ -1,20 +1,27 @@
-from PyQt5.QtWidgets import QMenuBar, QMenu, QAction
+# menu_bar.py
+from PyQt6.QtWidgets import QMenuBar
+from PyQt6.QtGui import QAction
 
+class Menu_Bar(QMenuBar):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.window = parent
+        self.setStyleSheet("font-size: 14px;")
+        self.init_ui()
+        self.menu_actions()
 
-def create_menu(window):
-    # Menu bar
-    menu_bar = QMenuBar()  # Get the menu bar
+    def init_ui(self):
+        self.file_menu = self.addMenu("File")
+        
+    def menu_actions(self):
+        open_action = QAction("Open", self)
+        open_action.triggered.connect(self.window.open_file_dialog)
+        self.file_menu.addAction(open_action)
 
-    menu_bar.setStyleSheet("font-size: 14px;")
+        new_action = QAction("New", self)
+        new_action.triggered.connect(self.window.new_file)
+        self.file_menu.addAction(new_action)
 
-    file_menu = QMenu("File", menu_bar)  # Create a "File" menu
-    menu_bar.addMenu(file_menu)  # Add the "File" menu to the menu bar
-
-    # Input file action
-    input_action = QAction("Select File", window)  # Create a QAction
-    input_action.triggered.connect(
-        window.open_file_dialog
-    )  # Connect the action's triggered signal to the open_file_dialog slot
-    file_menu.addAction(input_action)  # Add the action to the file menu
-
-    return menu_bar
+        exit_action = QAction("Exit", self)
+        exit_action.triggered.connect(self.window.close_application)  # Assuming a custom close method
+        self.file_menu.addAction(exit_action)

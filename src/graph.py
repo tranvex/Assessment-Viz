@@ -1,8 +1,5 @@
-# import matplotlib.patches as patches
-# graph.py
 import pandas as pd
 import matplotlib.pyplot as plt
-
 
 def create_graph(sheet_name, csv_file):
     try:

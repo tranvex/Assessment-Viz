@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QPalette, QColor
+from PyQt6.QtGui import QPalette, QColor
 
 
 def set_custom_palette(app):
@@ -25,7 +25,6 @@ def set_stylesheet(app):
         QMainWindow {
             background-color: #999;
         }
-
         QPushButton {
             background-color: #555;
             color: white;
