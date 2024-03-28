@@ -5,7 +5,6 @@ from menu_bar import Menu_Bar
 from excel_viewer import Excel_Viewer
 from excel_loader import ExcelLoader
 
-
 # Define a class named MainWindow which inherits from QMainWindow
 class MainWindow(QMainWindow):
     # Initialize the class
