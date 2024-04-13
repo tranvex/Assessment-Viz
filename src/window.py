@@ -1,69 +1,86 @@
-from PyQt6.QtWidgets import QMainWindow, QFileDialog, QMessageBox
-from PyQt6.QtGui import QIcon
+'''MIGHT DELETE LATER?????
+
+SICKO MODE PT 2 AS IN I REMOVED REDUNDANT CODE 
+PROBABLY ADDED BY ME.... ANYWAYS THIS NEEDS SOME TWEAKING TOO
+
+#SAYNOTODRUGS
+
+'''
+
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 import os
-from menu_bar import Menu_Bar
 from excel_viewer import Excel_Viewer
 from excel_loader import ExcelLoader
+from tool_bar import ToolBar
+from second_page import SecondPage
 
-# Define a class named MainWindow which inherits from QMainWindow
 class MainWindow(QMainWindow):
-    # Initialize the class
     def __init__(self):
-        # Call the parent class's __init__ method
         super().__init__()
-        # Set the window title
-        self.setWindowTitle("WisdomWaves")
-        # Set the window geometry: x, y, width, height
+        self.setWindowTitle("Wisdom Waves")
         self.setGeometry(100, 100, 800, 600)
-        # Set the window icon, the path is relative to this file's location
-        self.setWindowIcon(
-            QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico"))
-        )
-        # Call the initUI method to initialize the user interface
+        self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico")))
         self.initUI()
 
-    # Define a method to initialize the user interface
     def initUI(self):
-        # Set the menu bar of the window to a new instance of Menu_Bar
-        self.setMenuBar(Menu_Bar(self))
-        # Create an Excel_Viewer instance
-        self.excel_viewer = Excel_Viewer(self)
-        # Set the central widget of the window to the Excel_Viewer instance
-        self.setCentralWidget(self.excel_viewer)
+        self.setStyleSheet("QMainWindow { background-color: #FFF8DC; }")
+        self.tool_bar = ToolBar(self)
+        self.addToolBar(self.tool_bar)
 
-    # Define a method to open a file dialog for selecting Excel files
+        self.stacked_widget = QStackedWidget(self)
+        self.excel_viewer = Excel_Viewer(self)
+        self.excel_viewer.setStyleSheet("background-color: white;")
+
+        self.main_interface = QWidget()
+        main_interface_layout = QVBoxLayout(self.main_interface)
+        main_interface_layout.addWidget(self.excel_viewer)
+
+        self.file_page_view = QWidget()
+        self.stacked_widget.addWidget(self.main_interface)
+        self.stacked_widget.addWidget(self.file_page_view)
+        self.setCentralWidget(self.stacked_widget)
+
     def open_file_dialog(self):
-        # Open a file dialog and get the selected file name
-        file_name, _ = QFileDialog.getOpenFileName(
-            self, "Open Excel File", "", "Excel Files (*.xls *.xlsx)"
-        )
-        # If a file was selected, load it
+        file_name, _ = QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xls *.xlsx)")
         if file_name:
             self.load_excel_file(file_name)
 
-    # Define a method to create a new file
     def new_file(self):
-        # Ask the user for confirmation before creating a new file
-        response = QMessageBox.question(
-            self,
-            "New File",
-            "Are you sure you want to open a new file and clear existing data?",
-        )
-        # If the user confirmed, clear the existing data and open the file dialog
+        response = QMessageBox.question(self, "New File",
+                                        "Are you sure you want to open a new file and clear existing data?",
+                                        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if response == QMessageBox.StandardButton.Yes:
             self.excel_viewer.clear_data()
             self.open_file_dialog()
 
-    # Define a method to load an Excel file
     def load_excel_file(self, file_path):
-        # Create an ExcelLoader instance with the selected file path
         excel_loader = ExcelLoader(file_path)
-        # Load the Excel file
         excel_loader.load_excel()
-        # Load the Excel file into the Excel_Viewer
         self.excel_viewer.load_excel_file(excel_loader)
 
-    # Define a method to close the application
     def close_application(self):
-        # Close the window
         self.close()
+
+    def show_file_page(self):
+        # Switch to the 'File' page view
+        self.stacked_widget.setCurrentIndex(1)
+
+    def show_main_interface(self):
+        # Switch back to the main interface
+        self.stacked_widget.setCurrentIndex(0)
+        
+    def show_second_page(self):
+        # Create the second page if it doesn't exist yet
+        if not hasattr(self, 'customSecpage'):
+            self.customSecpage = SecondPage(self)
+            self.stacked_widget.addWidget(self.customSecpage)
+        
+        # Find the index of the second page and switch to it
+        index = self.stacked_widget.indexOf(self.customSecpage)
+        self.stacked_widget.setCurrentIndex(index)
+        
+    def resizeEvent(self, event):
+        QMainWindow.resizeEvent(self, event)
+        self.centralWidget().resize(self.size())
+        self.centralWidget().update()

@@ -1,15 +1,13 @@
-# main.py
-import sys
+#main 
 from PyQt6.QtWidgets import QApplication
-from window import MainWindow  # Import the MainWindow class
-
+from start_page import StartPage
+import sys
 
 def main():
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    startPage = StartPage()
+    startPage.show()
     sys.exit(app.exec())
-
 
 if __name__ == "__main__":
     main()

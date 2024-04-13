@@ -1,5 +1,7 @@
+'''THIS MIGHT BECOME USELESS AND WHOLE FILE COULD BE NUKED
+I REPEAT NUKED!
+'''
 import pandas as pd
-
 
 # Define a class named ExcelLoader
 class ExcelLoader:
