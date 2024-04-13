@@ -20,7 +20,7 @@ class Excel_Viewer(QWidget):
         self.table = QTableWidget()
         self.layout.addWidget(self.table)
         
-        # This line ensures the table expands both horizontally and vertically
+        # ensures the table expands both horizontally and vertically
         self.table.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         self.excel_loader = None
@@ -61,7 +61,6 @@ class Excel_Viewer(QWidget):
 
         # For the last column, let it take the remaining space without stretching too much
         header.setSectionResizeMode(self.table.columnCount() - 1, QHeaderView.ResizeMode.Stretch)
-
 
     def format_value_for_display(self, value):
         if pd.isnull(value):

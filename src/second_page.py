@@ -13,10 +13,11 @@ class SecondPage(QWidget):
 
     def initUI(self):
         # Sidebar setup
-        self.sidebar = QWidget()  # Changed from self.sidebarLayout to self.sidebar
+        self.sidebar = QWidget()
         self.sidebar.setStyleSheet("background-color: #555; color: white;")
         self.sidebar.setFixedWidth(150)
-        sidebarLayout = QVBoxLayout(self.sidebar)  # Attach layout directly to the widget
+        # Attach layout directly to the widget
+        sidebarLayout = QVBoxLayout(self.sidebar)  
 
         # Styling sidebar buttons
         sidebarButtonStyle = """
@@ -49,10 +50,11 @@ class SecondPage(QWidget):
         for btn in buttonList:
             btn.setIconSize(QSize(25, 25))
             btn.setStyleSheet(sidebarButtonStyle)
+            # Add buttons to the sidebar layout
             if sidebarLayout.addWidget(btn) == 'btnHelp':
                 sidebarLayout.addStretch(1)
             else:
-                sidebarLayout.addWidget(btn)  # Add buttons to the sidebar layout
+                sidebarLayout.addWidget(btn)
 
         # Connect button signals to their respective slots
         btnSave.clicked.connect(self.save)

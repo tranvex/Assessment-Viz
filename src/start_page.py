@@ -194,7 +194,7 @@ class StartPage(QMainWindow):
     def load_project(self, file_path):
         from window import MainWindow
         self.mainWindow = MainWindow()
-        self.mainWindow.load_excel_file(file_path) # This function needs to be defined in MainWindow
+        self.mainWindow.load_excel_file(file_path)
         self.close()
             
     def load_recent_projects(self):
@@ -207,7 +207,6 @@ class StartPage(QMainWindow):
 
         for project in recent_projects:
             self.add_to_recent(project['path'], project['date_modified'])
-
 
     def add_to_recent(self, file_path, date_modified):
         item = QListWidgetItem(os.path.basename(file_path))
