@@ -12,7 +12,7 @@ class Graph:
         # Declare lists to hold years(sheet names), dataframes, and measures
         self.years = self.loader.get_sheet_names()
         self.all_dfs = []
-        self.measuers = []
+        self.measures = []
         # Call get_data method to store necessary data in lists
         self.get_data()
         
@@ -21,7 +21,7 @@ class Graph:
         for sheet_name in self.loader.all_sheets:
             self.all_dfs.append(self.loader.get_sheet_data(sheet_name))
             
-        self.measuers = self.all_dfs[0]['Measures']
+        self.measures = self.all_dfs[0]['Measures']
         
     # Define a method for graphing data onto a scatter plot
     def plot_data(self):
@@ -44,7 +44,7 @@ class Graph:
             # Title X and Y axes as well as the graph
             plt.xlabel("School Year")
             plt.ylabel("% Students Met Target")
-            plt.title(f"Graph for Measure {self.measuers[6]}")
+            plt.title(f"Graph for Measure {self.measures[6]}")
             # Get current axes, set labels for X ticks, set Y axis limit
             ax = plt.gca()
             ax.set_xticklabels(self.years[0:3])
