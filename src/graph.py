@@ -68,8 +68,3 @@ class Graph:
         except Exception as e:
             # Print error if problem occurred during graphing process
             print(f"An error occurred while generating the graph: {e}")
-        
-    
-if __name__ == "__main__":
-    g = Graph('SWE Datafile2023.xlsx', '2017-2018', '2022-2023', 'S1M14T1')
-    g.plot_data()
