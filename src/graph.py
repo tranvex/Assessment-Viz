@@ -9,7 +9,7 @@ class Graph:
     def __init__(self, file_name):
         # Create instance of ExcelLoader with file name and load its data
         self.loader = DataLoader(file_name)
-        self.loader.load_excel()
+        self.loader.load_data()
         
         # Declare lists to hold years(sheet names), dataframes, and measures
         self.years = self.loader.get_sheet_names()
@@ -21,7 +21,7 @@ class Graph:
         
     # Define a method for retrieving dataframes and measures from ExcelLoader
     def get_data(self):
-        for sheet_name in self.loader.all_sheets:
+        for sheet_name in self.loader.data:
             self.all_dfs.append(self.loader.get_sheet_data(sheet_name))
             
         self.measures = list(self.all_dfs[0]['Measures'])
