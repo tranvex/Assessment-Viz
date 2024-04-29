@@ -1,7 +1,3 @@
-'''NEED I SAY MORE??
-TWEAAAAAAKS NEEDED
-'''
-
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
@@ -36,7 +32,7 @@ class SecondPage(QWidget):
 
         # Create buttons for the sidebar
         btnHome = QPushButton(self.recolor_icon("Icons/home.png", 'white'), " Home")
-        btnNew = QPushButton(self.recolor_icon("Icons/new.png", 'white'), " New")
+        # btnNew = QPushButton(self.recolor_icon("Icons/new.png", 'white'), " New")
         btnOpen = QPushButton(self.recolor_icon("Icons/open.png", 'white')," Open")
         btnHelp = QPushButton(self.recolor_icon("Icons/help.png", 'white'), " Help")
         btnSave = QPushButton(" Save")
@@ -44,7 +40,7 @@ class SecondPage(QWidget):
         btnExport = QPushButton(" Export")
         btnClose = QPushButton(" Close")
         
-        buttonList = [btnHome,btnNew,btnOpen, btnSave, 
+        buttonList = [btnHome,btnOpen, btnSave, 
                       btnSaveAs, btnExport, btnClose, btnHelp]
         
         for btn in buttonList:

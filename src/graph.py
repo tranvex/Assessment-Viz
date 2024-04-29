@@ -1,4 +1,4 @@
-from excel_loader import ExcelLoader
+from data_loader import DataLoader
 import matplotlib.pyplot as plt
 
 # Class for Graphing Data
@@ -7,7 +7,7 @@ class Graph:
     # Initialize with name of the Excel File
     def __init__(self, file_name, start_year, end_year, msr):
         # Create instance of ExcelLoader with file name and load its data
-        self.loader = ExcelLoader(file_name)
+        self.loader = DataLoader(file_name)
         self.loader.load_excel()
         
         # Declare lists to hold years(sheet names), dataframes, and measures

@@ -9,26 +9,23 @@ class ToolBar(QToolBar):
 
         # Add 'File' section to take us back to the starter page
         self.add_file_section()
-
-        # Add 'Home' section with actions for manipulating or editing the Excel data
-        # self.add_home_section()
+        
+        self.add_graph_section()
 
     def add_file_section(self):
         # Add a 'File' action that takes the user back to the starter page
         file_action = QAction("File", self)
         file_action.triggered.connect(self.window.show_second_page)
         self.addAction(file_action)
+        
+    def add_graph_section(self):
+        # Add a 'Graph' action to open the graph dialog or view
+        graph_action = QAction("Graph", self)
+        graph_action.triggered.connect(self.open_graph)
+        self.addAction(graph_action)
 
-    # def add_home_section(self):
-    #     # Add actions for the 'Home' section
-    #     home_action = QAction("Home", self)
-    #     home_action.triggered.connect(self.window.show_starter_page)
-    #     self.addAction(home_action)
-    #     self.addSeparator()
+    def open_graph(self):
+        self.window.open_graph_dialog()
 
     def custom_sec(self):
         self.window.show_second_page()
-        
-'''IGNORE THE COMMENTED STUFF I WAS TESTING BUT NEEDED "IMPLEMENTATION"
-OF THE ADD HOME SECTION ANYWAYS THIS IS HIGHLY UNFINISHED BUT WILL HAVE MORE SOON!!!!
-'''

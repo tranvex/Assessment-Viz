@@ -1,43 +1,38 @@
-'''DELETE LATER!!!!!!!!!!!
-WENT SICKO MODE ON THIS!! NEEDS TWEAKS MENTIONED IN THE CHANGE LOG.
-
-'''
-
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 import json
 import os
-from window import MainWindow
+from window import MainWindow  # Ensure this correctly points to your MainWindow module
 
 class StartPage(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Wisdom Waves")
         self.setGeometry(100, 100, 800, 600)
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Hide the default title bar
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.oldPos = self.pos()
         self.initUI()
 
     def initUI(self):               
-        # Custom title bar
+        # Custom title bar setup
         self.titleBar = QWidget()
         self.titleBarLayout = QHBoxLayout()
         self.titleBar.setStyleSheet("background-color: #333;")
         self.titleBar.setFixedHeight(40)
         self.titleBar.setLayout(self.titleBarLayout)
         
-        # Window title
+        # Window title label setup
         self.windowTitleLabel = QLabel("Wisdom Waves")
         self.windowTitleLabel.setStyleSheet("color: white; font-size: 16px; font-weight: bold; padding-left: 5px")
         self.windowTitleLabel.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         
-        # Custom buttons with icons
+        # Custom buttons for window controls
         self.minimizeButton = QPushButton(QIcon(self.recolor_icon("Icons/min.png", "white")), "")
         self.maximizeButton = QPushButton(QIcon(self.recolor_icon("Icons/max.png", "white")), "")
         self.closeButton = QPushButton(QIcon(self.recolor_icon("Icons/close.png", "white")), "")
         
-        # Button styling
+        # Styling for the custom buttons
         buttonStyle = """
             QPushButton {
                 border: none;
@@ -65,7 +60,7 @@ class StartPage(QMainWindow):
         self.maximizeButton.clicked.connect(self.toggleMaximize)
         self.closeButton.clicked.connect(self.close)
         
-        # Title bar layout
+        # Title bar layout setup
         self.titleBarLayout.addWidget(self.windowTitleLabel)
         self.titleBarLayout.addStretch(1)
         self.titleBarLayout.addWidget(self.minimizeButton)
@@ -84,14 +79,13 @@ class StartPage(QMainWindow):
         
         # Sidebar buttons with icons
         btnHome = QPushButton(self.recolor_icon("Icons/home.png", 'white'), " Home")
-        btnNew = QPushButton(self.recolor_icon("Icons/new.png", 'white'), " New")
         btnOpen = QPushButton(self.recolor_icon("Icons/open.png", 'white')," Open")
         btnHelp = QPushButton(self.recolor_icon("Icons/help.png", 'white'), " Help")
 
-        # Styling sidebar buttons
+        # Apply styles and add sidebar buttons
         sidebarButtonStyle = """
             QPushButton {
-                font-family: 'Arians';
+                font-family: 'Arial';
                 color: white;
                 font-size: 18px;
                 text-align: left;
@@ -103,12 +97,11 @@ class StartPage(QMainWindow):
             }
         """
         
-        for btn in [btnHome, btnNew, btnHelp, btnOpen]:
+        for btn in [btnHome, btnHelp, btnOpen]:
             btn.setIconSize(QSize(25, 25))
             btn.setStyleSheet(sidebarButtonStyle)
         
         sidebarLayout.addWidget(btnHome)
-        sidebarLayout.addWidget(btnNew)
         sidebarLayout.addWidget(btnOpen)
         sidebarLayout.addStretch(1)
         sidebarLayout.addWidget(btnHelp)
@@ -148,11 +141,13 @@ class StartPage(QMainWindow):
         
         # Connect signals to slots for button actions
         btnHome.clicked.connect(self.on_home_clicked)
-        btnNew.clicked.connect(self.openMainWindow)
         btnOpen.clicked.connect(self.on_open_clicked)
         btnHelp.clicked.connect(self.on_help_clicked)
-        
+    
     def recolor_icon(self, icon_path, color):
+        """
+        Recolors the provided icon with the specified color.
+        """
         pixmap = QPixmap(icon_path)
         mask = pixmap.createMaskFromColor(QColor('black'), Qt.MaskMode.MaskOutColor)
         colored_pixmap = QPixmap(pixmap.size())
@@ -160,86 +155,105 @@ class StartPage(QMainWindow):
         colored_pixmap.setMask(mask)
         return QIcon(colored_pixmap)
     
+    def load_recent_projects(self):
+        """
+        Loads and displays the list of recent projects from a JSON file.
+        """
+        self.recentProjectsList.clear()
+        try:
+            with open('recent_projects.json', 'r') as file:
+                recent_projects = json.load(file)
+            for project in recent_projects:
+                item = QListWidgetItem(os.path.basename(project['path']))
+                item.setToolTip(project['path'])  # Full path as tooltip
+                self.recentProjectsList.addItem(item)
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass 
+    
     def mousePressEvent(self, event):
+        """
+        Captures the initial position when the mouse is pressed to allow moving the frameless window.
+        """
         if self.titleBar.rect().contains(event.position().toPoint()):  # Check if click is within title bar
             self.oldPos = event.globalPosition().toPoint()
 
     def mouseMoveEvent(self, event):
+        """
+        Allows the window to be moved by dragging the title bar.
+        """
         if not self.oldPos:
-            return  # This ensures movement only starts if oldPos was set in title bar press
+            return
         if self.titleBar.rect().contains(event.position().toPoint()):
             delta = QPoint(event.globalPosition().toPoint() - self.oldPos)
             self.move(self.x() + delta.x(), self.y() + delta.y())
             self.oldPos = event.globalPosition().toPoint()
             
     def toggleMaximize(self):
+        """
+        Toggles the window between normal and maximized states.
+        """
         if self.isMaximized():
             self.showNormal()
         else:
             self.showMaximized()
-    
-    def openMainWindow(self):
-        self.mainWindow = MainWindow()
-        self.mainWindow.show()
-        self.close()
 
     def on_open_clicked(self):
-        fileName, _ = QFileDialog.getOpenFileName(self, "Open File", "", "All Files (*)")
-        if fileName:
-            self.main_window = MainWindow()
-            self.main_window.load_excel_file(fileName)
-            self.main_window.show()
-            self.close()  # Close the start page
-            
-    def load_project(self, file_path):
-        from window import MainWindow
-        self.mainWindow = MainWindow()
-        self.mainWindow.load_excel_file(file_path)
-        self.close()
-            
-    def load_recent_projects(self):
-        self.recentProjectsList.clear()  # Clear existing entries
+        """
+        Handles the 'Open' button click. Opens a file dialog to select a file and loads it in MainWindow.
+        """
+        file_name, _ = QFileDialog.getOpenFileName(self, "Open File", "", "Excel Files (*.xls *.xlsx);;CSV Files (*.csv)")
+        if file_name:
+            self.open_file(file_name)
+
+    def open_file(self, file_path):
+        """
+        Initializes and shows the main window with the loaded file, then closes the start page.
+        """
+        self.main_window = MainWindow()
+        self.main_window.load_data(file_path)
+        self.main_window.show()
+        self.update_recent_projects(file_path)  # Update the list of recent projects
+        self.close()  # Close the start page
+
+    def update_recent_projects(self, file_path):
+        """
+        Updates the list of recent projects in a JSON file and refreshes the list in the UI.
+        """
+        # Read existing projects and update with the new one
         try:
             with open('recent_projects.json', 'r') as file:
                 recent_projects = json.load(file)
         except (FileNotFoundError, json.JSONDecodeError):
             recent_projects = []
 
-        for project in recent_projects:
-            self.add_to_recent(project['path'], project['date_modified'])
-
-    def add_to_recent(self, file_path, date_modified):
-        item = QListWidgetItem(os.path.basename(file_path))
-        item.setToolTip(file_path)  # Full path as tooltip
-        self.recentProjectsList.addItem(item)
-
-    def update_recent_projects(self, file_path):
-        # Update the recent projects file
-        recent_projects = []
-
-        # Read existing recent projects
-        if os.path.exists('recent_projects.json'):
-            with open('recent_projects.json', 'r') as file:
-                recent_projects = json.load(file)
-
-        # Update with the new file
-        new_entry = {
-            'path': file_path,
-            'date_modified': QFileInfo(file_path).lastModified().toSecsSinceEpoch()
-        }
-        # Remove old entry if it exists
-        recent_projects = [proj for proj in recent_projects if proj['path'] != file_path]
-        # Insert new entry at the beginning
-        recent_projects.insert(0, new_entry)
-        # Keep only the most recent N entries
-        recent_projects = recent_projects[:10]
+        new_entry = {'path': file_path, 'date_modified': QFileInfo(file_path).lastModified().toString()}
+        recent_projects = [proj for proj in recent_projects if proj['path'] != file_path]  # Remove duplicate
+        recent_projects.insert(0, new_entry)  # Insert new at the top
+        recent_projects = recent_projects[:10]  # Keep only the most recent 10 entries
 
         with open('recent_projects.json', 'w') as file:
             json.dump(recent_projects, file)
 
-        self.load_recent_projects()  # Refresh the list in the UI
+        self.load_recent_projects()
+        
+    def setupContentAreas(self):
+        self.recentProjectsView = QWidget()
+        rpLayout = QVBoxLayout(self.recentProjectsView)
+        self.recentProjectsList = QListWidget()
+        rpLayout.addWidget(self.recentProjectsList)
+        self.contentStack.addWidget(self.recentProjectsView)
+
+        self.helpTextView = QWidget()
+        helpLayout = QVBoxLayout(self.helpTextView)
+        self.helpTextLabel = QLabel()
+        self.helpTextLabel.setWordWrap(True)
+        helpLayout.addWidget(self.helpTextLabel)
+        self.contentStack.addWidget(self.helpTextView)
         
     def on_help_clicked(self):
+        """
+        Displays help information in the content area when the 'Help' button is clicked.
+        """
         self.recentProjectsList.setVisible(False)
         self.helpTextLabel.setVisible(True)
         
@@ -258,7 +272,7 @@ class StartPage(QMainWindow):
             <body>
                 <div class="instructions">
                     <h2>Starting</h2>
-                    <p>To begin, navigate to the <b>Home Page</b> and select either <b>New</b> or <b>Open</b> to open an existing file. Locate and open the desired file. Upon opening, the application presents a drop-down menu for sheet selection within the Excel file.</p>
+                    <p>To begin, navigate to the <b>Home Page</b> and select <b>Open</b> to open an existing file. Locate and open the desired file. Upon opening, the application presents a drop-down menu for sheet selection within the Excel file.</p>
                     <p class="step">The selected sheet's data will be displayed, and you are free to view or modify the content as required.</p>
                 </div>
                 
@@ -268,6 +282,11 @@ class StartPage(QMainWindow):
             </html>
         """)
         
+        self.contentStack.setCurrentWidget(self.helpTextLabel)
+
     def on_home_clicked(self):
-        self.helpTextLabel.setVisible(False)
+        """
+        Resets the visibility of UI components to show the home page content.
+        """
+        self.contentStack.setCurrentWidget(self.recentProjectsList)
         self.recentProjectsList.setVisible(True)
