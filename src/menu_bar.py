@@ -3,6 +3,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 
 class MenuBar(QMenuBar):
+    homeRequested = pyqtSignal()
     def __init__(self, parent=None):
         super().__init__(parent)
         self.window = parent
@@ -12,7 +13,7 @@ class MenuBar(QMenuBar):
         #Graph menu 
         self.add_graph_menu()
         # Home menu
-        # self.add_home_menu()
+        self.add_home_menu()
 
     def add_file_menu(self):
         file_menu = self.addMenu("File")
@@ -36,4 +37,5 @@ class MenuBar(QMenuBar):
     def add_home_menu(self):
         # Add 'Home' action
         home_action = QAction("Home",self)
-        home_action.triggered.connect()
+        home_action.triggered.connect(self.homeRequested.emit)
+        self.addAction(home_action)

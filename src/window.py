@@ -17,7 +17,6 @@ class MainWindow(QMainWindow):
         self.graph = None
         self.initUI()
         
-
     def initUI(self):
         self.setStyleSheet("QMainWindow { background-color: gray; }")
         
@@ -37,7 +36,15 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.main_interface)
         self.stacked_widget.addWidget(self.file_page_view)
         self.setCentralWidget(self.stacked_widget)
-
+        
+        self.menu_bar.homeRequested.connect(self.go_to_home)
+        
+    def go_to_home(self):
+        from start_page import StartPage
+        # Method to switch back to the StartPage
+        self.start_page = StartPage()
+        self.start_page.show()
+        self.close()
   
     def open_file_dialog(self):
         # File dialog to handle Excel and CSV files properly
@@ -71,7 +78,6 @@ class MainWindow(QMainWindow):
         QMainWindow.resizeEvent(self, event)
         self.centralWidget().resize(self.size())
         self.centralWidget().update()
-    
     
     def load_data(self, file_path):
             data_loader = DataLoader(file_path)

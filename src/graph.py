@@ -5,23 +5,22 @@ from pandas import isna
 # Class for Graphing Data
 class Graph:
     
-    # Initialize with name of the Excel File
     def __init__(self, data_loader):
-        # Create instance of ExcelLoader with file name and load its data
         self.loader = data_loader
-        self.years = self.loader.get_sheet_names() if hasattr(self.loader, 'get_sheet_names') else []
-        self.all_dfs = []
+        self.years = self.loader.get_sheet_names()
         self.measures = []
+        self.all_dfs = []
+
         self.get_data()
         
     # Define a method for retrieving dataframes and measures from ExcelLoader
     def get_data(self):
         for sheet_name in self.years:
-            sheet_data = self.loader.get_sheet_data(sheet_name)
-            if sheet_data is not None:
-                self.all_dfs.append(sheet_data)
-                if 'Measures' in sheet_data.columns:
-                    self.measures = list(sheet_data['Measures'].unique())
+            df = self.loader.get_sheet_data(sheet_name)
+            if df is not None:
+                self.all_dfs.append(df)
+                if 'Measures' in df.columns:
+                    self.measures.extend(df['Measures'].dropna().unique())
         
     # Define a method for graphing data onto a scatter plot
     def plot_data(self, start_year, end_year, msr):
