@@ -3,32 +3,33 @@ from PyQt6.QtGui import *
 import os
 from display_data import DataDisplay
 from data_loader import DataLoader
-from tool_bar import ToolBar
-from second_page import SecondPage
+from menu_bar import MenuBar
+from graph_dialog import GraphDialog
+from PyQt6.QtCore import *
 from graph import Graph
 
 class MainWindow(QMainWindow):
-    def __init__(self, file_name=None):
+    def __init__(self):
         super().__init__()
         self.setWindowTitle("Wisdom Waves")
         self.setGeometry(100, 100, 800, 600)
         self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico")))
         self.initUI()
-        self.graph = Graph(file_name)
 
     def initUI(self):
-        self.setStyleSheet("QMainWindow { background-color: #FFF8DC; }")
+        self.setStyleSheet("QMainWindow { background-color: #gray; }")
+        
+        self.menu_bar = MenuBar(self)
+        self.setMenuBar(self.menu_bar)
 
-        self.tool_bar = ToolBar(self)
-        self.addToolBar(self.tool_bar)
-
+        # Main content area including data display and file page view
         self.stacked_widget = QStackedWidget(self)
         self.data_display = DataDisplay(self) 
         self.data_display.setStyleSheet("background-color: white;")
-
         self.main_interface = QWidget()
-        main_interface_layout = QVBoxLayout(self.main_interface)
+        main_interface_layout = QVBoxLayout()
         main_interface_layout.addWidget(self.data_display, 1)
+        self.main_interface.setLayout(main_interface_layout)
 
         self.file_page_view = QWidget()
         self.stacked_widget.addWidget(self.main_interface)
@@ -37,7 +38,7 @@ class MainWindow(QMainWindow):
 
   
     def open_file_dialog(self):
-        # Updated the file dialog to include both Excel and CSV file formats
+        # File dialog to handle Excel and CSV files properly
         file_name, _ = QFileDialog.getOpenFileName(self, "Open File", "", "Excel Files (*.xls *.xlsx);;CSV Files (*.csv)")
         if file_name:
             self.load_data(file_name)
@@ -53,10 +54,18 @@ class MainWindow(QMainWindow):
     def load_data(self, file_path):
         data_loader = DataLoader(file_path)
         data_loader.load_data()
-        self.data_display.load_data(data_loader)
+        if data_loader.data:
+            self.data_display.load_data(data_loader)
+        else:
+            QMessageBox.critical(self, "Error", "Failed to load data from the file.")
 
     def close_application(self):
-        self.close()
+        reply = QMessageBox.question(self, 'Exit Confirmation', 
+                                    "Are you sure you want to exit?",
+                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+                                    QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
+            self.close()
 
     def show_file_page(self):
         self.stacked_widget.setCurrentIndex(1)
@@ -64,41 +73,26 @@ class MainWindow(QMainWindow):
     def show_main_interface(self):
         self.stacked_widget.setCurrentIndex(0)
 
-    def show_second_page(self):
-        if not hasattr(self, 'customSecpage'):
-            self.customSecpage = SecondPage(self)
-            self.stacked_widget.addWidget(self.customSecpage)
-        index = self.stacked_widget.indexOf(self.customSecpage)
-        self.stacked_widget.setCurrentIndex(index)
-
     def resizeEvent(self, event):
         QMainWindow.resizeEvent(self, event)
         self.centralWidget().resize(self.size())
         self.centralWidget().update()
     
-    
-    def createCustomTitleBar(self):
-        self.titleBar = QWidget()
-        self.titleBarLayout = QHBoxLayout()
-        self.titleBar.setStyleSheet("background-color: #333; color: white;")
-        self.titleBar.setFixedHeight(40)
-
-        self.lblTitle = QLabel("Wisdom Waves")
-
-        self.titleBarLayout.addWidget(self.lblTitle)
-
-        self.titleBar.setLayout(self.titleBarLayout)
-        
-        # Add custom title bar to main layout
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.titleBar)
-
-        container = QWidget()
-        container.setLayout(mainLayout)
-        self.setCentralWidget(container)
         
     def open_graph_dialog(self):
-        if self.graph.setup_graph_dialog():
-            self.graph.dialog.exec()
+        if self.graph.data_is_loaded():  # Make sure data is loaded in graph before opening dialog
+            try:
+                graph_dialog = GraphDialog(self.graph, self)
+                graph_dialog.exec()
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Failed to set up graph dialog: {e}")
         else:
-            QMessageBox.critical(self, "Error", "Failed to set up graph dialog.")
+            QMessageBox.critical(self, "Error", "No data loaded. Load data before graphing.")
+            
+    def show_sheet_data(self, sheet_name):
+        sheet_data = self.data_loader.get_sheet_data(sheet_name)
+        if sheet_data is not None:
+            self.data_display.load_data(sheet_data)
+        else:
+            QMessageBox.critical(self, "Error", "Failed to load data for the selected sheet.")
+            

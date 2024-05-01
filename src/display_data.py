@@ -41,44 +41,32 @@ class DataDisplay(QWidget):
         tab_layout.addWidget(table_view)
         self.tab_widget.addTab(tab, name)
 
-    # def create_model_from_dataframe(self, data_frame):
-    #     """
-    #     Converts a DataFrame to QStandardItemModel to be used in a QTableView.
-    #     Converts 'nan' values to blank strings.
-    #     """
-    #     model = QStandardItemModel()
-    #     model.setHorizontalHeaderLabels(data_frame.columns.tolist())
-    #     for index, row in data_frame.iterrows():
-    #         items = []
-    #         for cell in row:
-    #             text = "" if isna(cell) else str(cell)
-    #             item = QStandardItem(text)
-    #             items.append(item)
-    #         model.appendRow(items)
-    #     return model
     def create_model_from_dataframe(self, data_frame):
-        """
-        Converts a DataFrame to QStandardItemModel to be used in a QTableView.
-        Formats floating-point numbers to a fixed number of decimal places.
-        Converts 'nan' values to blank strings.
-        """
         model = QStandardItemModel()
         model.setHorizontalHeaderLabels(data_frame.columns.tolist())
 
         for index, row in data_frame.iterrows():
             items = []
-            for cell in row:
+            for col_index, cell in enumerate(row):
+                item = QStandardItem()
+
                 if pd.isna(cell):
-                    text = ""
-                elif isinstance(cell, float):
-                    text = "{:.2f}".format(cell)
+                    item.setText('')
+                elif isinstance(cell, float) and 0 <= cell <= 1:
+                    # If the float value is between 0 and 1, format it as a percentage
+                    percentage_value = cell * 100  # Convert to percentage
+                    item.setText(f"{percentage_value:.0f}%")
                 else:
-                    text = str(cell)
-                item = QStandardItem(text)
+                    item.setText(str(cell))
+
+                # Align numeric data to the right and others to the left
+                alignment = Qt.AlignmentFlag.AlignRight if isinstance(cell, (int, float)) else Qt.AlignmentFlag.AlignLeft
+                item.setTextAlignment(alignment | Qt.AlignmentFlag.AlignVCenter)
                 items.append(item)
             model.appendRow(items)
+
         return model
-    
+
     def clear_data(self):
         """
         Clears all data displayed in the viewer.

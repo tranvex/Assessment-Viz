@@ -1,5 +1,5 @@
 import pandas as pd
-from PyQt6.QtWidgets import *
+from PyQt6.QtWidgets import QMessageBox
 
 class DataLoader:
     def __init__(self, file_name=None):
@@ -11,49 +11,66 @@ class DataLoader:
 
     def load_data(self):
         """
-        Loads data from the specified file, handling both Excel and CSV files.
-        Checks the file extension to apply the correct pandas function.
+        Loads data from the specified file, handling Excel files by reading all sheets.
         """
         if not self.file_name:
+            self.error_message("Filename not provided.")
             return
-        
-        if self.file_name.endswith('.xlsx'):
-            try:
+
+        try:
+            if self.file_name.endswith('.xlsx'):
                 # Load all sheets if it's an Excel file
-                self.data = pd.read_excel(self.file_name, sheet_name=None)
-            except Exception as e:
-                self.error_message(f"An error occurred while loading the Excel file: {e}")
-        elif self.file_name.endswith('.csv'):
-            try:
-                # Load a single sheet if it's a CSV file
+                self.data = pd.read_excel(self.file_name, sheet_name=None)  # Load all sheets
+                self.convert_sheets_to_csv()  # Optionally convert all sheets to CSV
+            elif self.file_name.endswith('.csv'):
+                # Assuming there is only one sheet in CSV
                 self.data = {'Sheet1': pd.read_csv(self.file_name)}
-            except Exception as e:
-                self.error_message(f"An error occurred while loading the CSV file: {e}")
-        else:
-            self.error_message("Unsupported file format. Please load an Excel or CSV file.")
+                if self.data['Sheet1'].empty:
+                    self.error_message("CSV file is empty or formatted incorrectly.")
+                else:
+                    print("CSV file loaded successfully.")
+        except Exception as e:
+            self.error_message(f"An error occurred while loading the file: {e}")
 
-    def get_sheet_names(self):
+    def load_csv_data(self):
         """
-        Returns the names of sheets available in the loaded data.
-        """
-        if self.data:
-            return list(self.data.keys())
-        else:
-            return []
-
-    def get_sheet_data(self, sheet_name):
-        """
-        Retrieves the data for the specified sheet.
+        Loads data from a CSV file.
         """
         try:
-            return self.data[sheet_name]
-        except KeyError:
-            self.error_message(f"Sheet named '{sheet_name}' does not exist.")
+            self.data = {'Sheet1': pd.read_csv(self.file_name)}
+            if self.data['Sheet1'].empty:
+                self.error_message("CSV file is empty or formatted incorrectly.")
+            else:
+                print("CSV file loaded successfully.")
         except Exception as e:
-            self.error_message(f"An error occurred while accessing the sheet: {e}")
+            self.error_message(f"An error occurred while loading the CSV file: {e}")
+
+    def get_measures(self):
+        """
+        Returns the list of measures from the loaded data.
+        Assumes 'Measures' is a column in the DataFrame.
+        """
+        if self.data:
+            sheet_data = self.data['Sheet1']
+            if 'Measures' in sheet_data.columns:
+                return sheet_data['Measures'].tolist()
+            else:
+                self.error_message("No 'Measures' column found in the data.")
+        return []
 
     def error_message(self, message):
         """
         Displays an error message in a dialog box.
         """
-        QMessageBox.critical(None, 'Error', message)
+        QMessageBox.critical(None, 'Data Loading Error', message)
+
+    def convert_sheets_to_csv(self):
+        if not self.data:
+            self.error_message("No data loaded to convert.")
+            return
+        
+        base_path = self.file_name.rsplit('.', 1)[0]
+        for sheet_name, df in self.data.items():
+            csv_file_name = f"{base_path}_{sheet_name}.csv"
+            df.to_csv(csv_file_name, index=False)
+            print(f"Converted {sheet_name} to CSV file at {csv_file_name}.")
