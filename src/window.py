@@ -14,10 +14,12 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Wisdom Waves")
         self.setGeometry(100, 100, 800, 600)
         self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico")))
+        self.graph = None
         self.initUI()
+        
 
     def initUI(self):
-        self.setStyleSheet("QMainWindow { background-color: #gray; }")
+        self.setStyleSheet("QMainWindow { background-color: gray; }")
         
         self.menu_bar = MenuBar(self)
         self.setMenuBar(self.menu_bar)
@@ -51,14 +53,6 @@ class MainWindow(QMainWindow):
             self.data_display.clear_data()
             self.open_file_dialog()
 
-    def load_data(self, file_path):
-        data_loader = DataLoader(file_path)
-        data_loader.load_data()
-        if data_loader.data:
-            self.data_display.load_data(data_loader)
-        else:
-            QMessageBox.critical(self, "Error", "Failed to load data from the file.")
-
     def close_application(self):
         reply = QMessageBox.question(self, 'Exit Confirmation', 
                                     "Are you sure you want to exit?",
@@ -78,21 +72,29 @@ class MainWindow(QMainWindow):
         self.centralWidget().resize(self.size())
         self.centralWidget().update()
     
-        
+    
+    def load_data(self, file_path):
+            data_loader = DataLoader(file_path)
+            data_loader.load_data()
+            if data_loader.data:
+                self.data_display.load_data(data_loader)
+                self.graph = Graph(data_loader)  # Initialize Graph here after data is loaded
+            else:
+                QMessageBox.critical(self, "Error", "Failed to load data from the file.")
+
     def open_graph_dialog(self):
-        if self.graph.data_is_loaded():  # Make sure data is loaded in graph before opening dialog
-            try:
-                graph_dialog = GraphDialog(self.graph, self)
-                graph_dialog.exec()
-            except Exception as e:
-                QMessageBox.critical(self, "Error", f"Failed to set up graph dialog: {e}")
-        else:
-            QMessageBox.critical(self, "Error", "No data loaded. Load data before graphing.")
-            
+            if self.graph and hasattr(self.graph, 'plot_data'):  # Check if graph is initialized and can plot
+                try:
+                    graph_dialog = GraphDialog(self.graph, self)
+                    graph_dialog.exec()
+                except Exception as e:
+                    QMessageBox.critical(self, "Error", f"Failed to set up graph dialog: {e}")
+            else:
+                QMessageBox.critical(self, "Error", "No data loaded. Load data before graphing.")
+
     def show_sheet_data(self, sheet_name):
         sheet_data = self.data_loader.get_sheet_data(sheet_name)
         if sheet_data is not None:
             self.data_display.load_data(sheet_data)
         else:
             QMessageBox.critical(self, "Error", "Failed to load data for the selected sheet.")
-            

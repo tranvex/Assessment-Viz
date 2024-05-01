@@ -74,3 +74,19 @@ class DataLoader:
             csv_file_name = f"{base_path}_{sheet_name}.csv"
             df.to_csv(csv_file_name, index=False)
             print(f"Converted {sheet_name} to CSV file at {csv_file_name}.")
+            
+    def get_sheet_names(self):
+        if self.data:
+           return list(self.data.keys())
+       
+        return []
+    
+    def get_sheet_data(self, sheet_name):
+        """
+        Returns the data for a specified sheet.
+        """
+        if self.data and sheet_name in self.data:
+            return self.data[sheet_name]
+        else:
+            self.error_message(f"No data found for sheet: {sheet_name}")
+            return None  # Or handle differently based on your error management strategy

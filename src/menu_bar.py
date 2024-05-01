@@ -11,6 +11,8 @@ class MenuBar(QMenuBar):
         self.add_file_menu()
         #Graph menu 
         self.add_graph_menu()
+        # Home menu
+        # self.add_home_menu()
 
     def add_file_menu(self):
         file_menu = self.addMenu("File")
@@ -26,7 +28,12 @@ class MenuBar(QMenuBar):
         file_menu.addAction(exit_action)
         
     def add_graph_menu(self):
-        # Add 'Graph' action
-        graph_action = QAction("Graph", self)
+        graph_menu = self.addMenu("Graph")
+        graph_action = QAction("Show Graph", self)
         graph_action.triggered.connect(self.window.open_graph_dialog)
-        self.addAction(graph_action)
+        graph_menu.addAction(graph_action)
+
+    def add_home_menu(self):
+        # Add 'Home' action
+        home_action = QAction("Home",self)
+        home_action.triggered.connect()

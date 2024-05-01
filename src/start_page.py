@@ -229,6 +229,7 @@ class StartPage(QMainWindow):
         file_name, _ = QFileDialog.getOpenFileName(self, "Open File", "", "Excel Files (*.xls *.xlsx);;CSV Files (*.csv)")
         if file_name:
             self.open_file(file_name)
+            
 
     def open_file(self, file_path):
         """
