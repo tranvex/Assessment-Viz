@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Wisdom Waves")
         self.setGeometry(100, 100, 800, 600)
-        self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico")))
+        self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "WisdomWaves.svg")))
         self.graph = None
         self.initUI()
         self.initStatusBar()

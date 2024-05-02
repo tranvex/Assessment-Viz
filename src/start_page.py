@@ -24,6 +24,7 @@ class StartPage(QMainWindow):
         self.titleBar.setFixedHeight(40)
         self.titleBar.setLayout(self.titleBarLayout)
         
+        
         # Window title label setup
         self.windowTitleLabel = QLabel("Wisdom Waves")
         self.windowTitleLabel.setStyleSheet("color: white; font-size: 16px; font-weight: bold; padding-left: 5px")
