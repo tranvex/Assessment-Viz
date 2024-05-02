@@ -259,6 +259,7 @@ class StartPage(QMainWindow):
         self.close()
 
     def on_exit_clicked(self):
+        self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "icons", "exit.svg")))
         reply = QMessageBox.question(self, 'Exit Confirmation', 
                                     "Are you sure you want to exit?",
                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
