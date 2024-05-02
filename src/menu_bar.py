@@ -8,13 +8,15 @@ class MenuBar(QMenuBar):
         super().__init__(parent)
         self.window = parent
         
-        # File menu with open and exit actions
-        self.add_file_menu()
-        #Graph menu 
-        self.add_graph_menu()
         # Home menu
         self.add_home_menu()
 
+        # File menu with open and exit actions
+        self.add_file_menu()
+        
+        #Graph menu 
+        self.add_graph_menu()
+        
     def add_file_menu(self):
         file_menu = self.addMenu("File")
         
