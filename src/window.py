@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         self.initStatusBar()
         
     def initUI(self):
-        self.setStyleSheet("QMainWindow { background-color: white; }")
+        self.setStyleSheet("QMainWindow { background-color: gray; }")
         
         self.menu_bar = MenuBar(self)
         self.setMenuBar(self.menu_bar)
