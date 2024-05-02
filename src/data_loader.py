@@ -14,8 +14,8 @@ class DataLoader:
             self.data = pd.read_excel(self.file_name, sheet_name=None)
             if not self.data.keys():
                 self.error_message("No sheets found in the file.")
-            else:
-                print(f"Data loaded successfully from {self.file_name} with sheets: {list(self.data.keys())}")
+            # else:
+            #     print(f"Data loaded successfully from {self.file_name} with sheets: {list(self.data.keys())}")
         except Exception as e:
             self.error_message(f"An error occurred while loading the file: {e}")
 

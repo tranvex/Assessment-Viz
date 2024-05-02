@@ -8,7 +8,6 @@ class Graph:
         if self.loader.data:
             self.years = self.loader.get_sheet_names()
             self.data_frames = {year: self.loader.get_sheet_data(year) for year in self.years}
-            print("Graph class initialized with data frames ready for plotting.")
         else:
             print("Graph class was initialized without data.")
 

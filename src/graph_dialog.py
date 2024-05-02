@@ -5,6 +5,7 @@ from PyQt6.QtCore import *
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import os
 
 class GraphDialog(QDialog):
     def __init__(self, graph, parent=None):
@@ -16,8 +17,8 @@ class GraphDialog(QDialog):
 
     def initUI(self):
         layout = QVBoxLayout(self)
-        self.canvas = FigureCanvas(Figure(figsize=(12, 15)))
-        
+        self.canvas = FigureCanvas(Figure(figsize=(12,15)))  # Ensure the figure is attached to the canvas
+
         scroll_area = QScrollArea(self)
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
@@ -32,9 +33,37 @@ class GraphDialog(QDialog):
         scroll_area.setWidget(scroll_widget)
         scroll_area.setWidgetResizable(True)
         
+        export_button = QPushButton("Export Graph")
+        export_button.clicked.connect(self.export_graph)
+        
         layout.addWidget(self.canvas)
         layout.addWidget(scroll_area)
+        layout.addWidget(export_button)
         self.setLayout(layout)
+        
+    def export_graph(self):
+        options = QFileDialog.Option.DontUseNativeDialog
+        file_filter = "PNG Files (*.png);;JPEG Files (*.jpg);;PDF Files (*.pdf)"
+        fileName, selectedFilter = QFileDialog.getSaveFileName(self, "Save Graph", "", file_filter, options=options)
+
+        if fileName:
+            # Ensure the file name ends with the correct extension based on filter
+            extension_map = {
+                "JPEG Files (*.jpg)": '.jpg',
+                "PNG Files (*.png)": '.png',
+                "PDF Files (*.pdf)": '.pdf'
+            }
+            extension = extension_map.get(selectedFilter)
+            if extension and not fileName.lower().endswith(extension):
+                fileName += extension
+
+            try:
+                # Attempt to save the figure
+                self.canvas.figure.savefig(fileName)
+                QMessageBox.information(self, "Export Success", f"Graph successfully exported as {os.path.basename(fileName)}")
+            except Exception as e:
+                QMessageBox.critical(self, "Export Failed", f"Failed to save graph: {str(e)}")
+
 
     def update_plot(self):
         self.selected_sheets = [name for name, cb in self.checkboxes.items() if cb.isChecked()]
