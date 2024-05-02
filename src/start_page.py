@@ -30,9 +30,9 @@ class StartPage(QMainWindow):
         self.windowTitleLabel.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         
         # Custom buttons for window controls
-        self.minimizeButton = QPushButton(QIcon(self.recolor_icon("Icons/min.png", "white")), "")
-        self.maximizeButton = QPushButton(QIcon(self.recolor_icon("Icons/max.png", "white")), "")
-        self.closeButton = QPushButton(QIcon(self.recolor_icon("Icons/close.png", "white")), "")
+        self.minimizeButton = QPushButton(QIcon(self.recolor_icon("Icons/min.svg", "white")), "")
+        self.maximizeButton = QPushButton(QIcon(self.recolor_icon("Icons/max.svg", "white")), "")
+        self.closeButton = QPushButton(QIcon(self.recolor_icon("Icons/close.svg", "white")), "")
         
         # Styling for the custom buttons
         buttonStyle = """
@@ -82,14 +82,16 @@ class StartPage(QMainWindow):
         self.stacked_widget()
         
         # Sidebar buttons with icons
-        btnHome = QPushButton(self.recolor_icon("Icons/home.png", 'white'), " Home")
-        btnOpen = QPushButton(self.recolor_icon("Icons/open.png", 'white')," Open")
-        btnHelp = QPushButton(self.recolor_icon("Icons/help.png", 'white'), " Help")
+        btnHome = QPushButton(self.recolor_icon("Icons/home.svg", 'white'), " Home")
+        btnOpen = QPushButton(self.recolor_icon("Icons/open.svg", 'white')," Open")
+        btnHelp = QPushButton(self.recolor_icon("Icons/help.svg", 'white'), " Help")
+        btnExit = QPushButton(self.recolor_icon("Icons/exit.svg", 'white'), "Exit")
         
         # Set status tips for each button
         btnHome.setStatusTip("Return to the Home page")
         btnOpen.setStatusTip("Open an existing project file")
         btnHelp.setStatusTip("Get help and documentation")
+        btnExit.setStatusTip("Close Application")
 
         # Apply styles and add sidebar buttons
         sidebarButtonStyle = """
@@ -106,7 +108,7 @@ class StartPage(QMainWindow):
             }
         """
         
-        for btn in [btnHome, btnHelp, btnOpen]:
+        for btn in [btnHome, btnHelp, btnOpen, btnExit]:
             btn.setIconSize(QSize(25, 25))
             btn.setStyleSheet(sidebarButtonStyle)
         
@@ -114,6 +116,7 @@ class StartPage(QMainWindow):
         sidebarLayout.addWidget(btnOpen)
         sidebarLayout.addStretch(1)
         sidebarLayout.addWidget(btnHelp)
+        sidebarLayout.addWidget(btnExit)
 
         self.final_layout()
         
@@ -121,6 +124,7 @@ class StartPage(QMainWindow):
         btnHome.clicked.connect(self.on_home_clicked)
         btnOpen.clicked.connect(self.on_open_clicked)
         btnHelp.clicked.connect(self.on_help_clicked)
+        btnExit.clicked.connect(self.on_exit_clicked)
         
         self.recentProjectsList.itemClicked.connect(self.on_recent_project_clicked)
 
@@ -254,7 +258,14 @@ class StartPage(QMainWindow):
         self.update_recent_projects(file_path)
         self.close()
 
-    
+    def on_exit_clicked(self):
+        reply = QMessageBox.question(self, 'Exit Confirmation', 
+                                    "Are you sure you want to exit?",
+                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+                                    QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
+            self.close()
+               
     def on_home_clicked(self):
         self.contentStack.setCurrentWidget(self.mainContent)
 
