@@ -18,9 +18,10 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), "assets", "s_logo.ico")))
         self.graph = None
         self.initUI()
+        self.initStatusBar()
         
     def initUI(self):
-        self.setStyleSheet("QMainWindow { background-color: gray; }")
+        self.setStyleSheet("QMainWindow { background-color: white; }")
         
         self.menu_bar = MenuBar(self)
         self.setMenuBar(self.menu_bar)
@@ -41,6 +42,10 @@ class MainWindow(QMainWindow):
         
         self.menu_bar.homeRequested.connect(self.go_to_home)
     
+    
+    def initStatusBar(self):
+        # This method initializes the status bar
+        self.statusBar().showMessage("Ready")
         
     def go_to_home(self):
         from start_page import StartPage
