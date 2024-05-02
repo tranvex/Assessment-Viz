@@ -39,7 +39,7 @@ class MenuBar(QMenuBar):
     def add_graph_menu(self):
         graph_menu = self.addMenu("Graph")
 
-        graph_action = QAction("Graph GUI", self)
+        graph_action = QAction("Show Graph", self)
         graph_action.triggered.connect(self.window.open_graph_dialog)
         graph_action.setStatusTip("Opens Graph GUI..")  # Use status tip
         graph_menu.addAction(graph_action)

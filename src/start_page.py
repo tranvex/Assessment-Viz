@@ -9,11 +9,12 @@ class StartPage(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Wisdom Waves")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(200, 200, 900, 700)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.oldPos = self.pos()
         self.initUI()
         self.load_recent_projects()
+        self.initStatusBar()
 
     def initUI(self):               
         # Custom title bar setup
@@ -84,6 +85,11 @@ class StartPage(QMainWindow):
         btnHome = QPushButton(self.recolor_icon("Icons/home.png", 'white'), " Home")
         btnOpen = QPushButton(self.recolor_icon("Icons/open.png", 'white')," Open")
         btnHelp = QPushButton(self.recolor_icon("Icons/help.png", 'white'), " Help")
+        
+        # Set status tips for each button
+        btnHome.setStatusTip("Return to the Home page")
+        btnOpen.setStatusTip("Open an existing project file")
+        btnHelp.setStatusTip("Get help and documentation")
 
         # Apply styles and add sidebar buttons
         sidebarButtonStyle = """
@@ -118,6 +124,10 @@ class StartPage(QMainWindow):
         
         self.recentProjectsList.itemClicked.connect(self.on_recent_project_clicked)
 
+    def initStatusBar(self):
+        # This method initializes the status bar
+        self.statusBar().showMessage("Ready")
+        
     def final_layout(self):
         # Finalize main layout
         mainLayout = QHBoxLayout()
@@ -150,29 +160,32 @@ class StartPage(QMainWindow):
             self.helpTextWidget = QWidget()  # Help text widget
             self.helpTextLayout = QVBoxLayout(self.helpTextWidget)
             self.helpTextLabel = QLabel("""
-                 <html>
-                 <head>
-                     <style>
-                         body { font-family: "Segoe UI", sans-serif; font-size: 14px; }
-                         h2 { color: #333366; }
-                         b { font-weight: bold; color: #333366; }
-                         p { line-height: 1.6; }
-                         .instructions { margin-bottom: 15px; }
-                         .step { margin-top: 10px; }
-                     </style>
-                 </head>
-                 <body>
-                     <div class="instructions">
-                         <h2>Starting</h2>
-                         <p>To begin, navigate to the <b>Home Page</b> and select <b>Open</b> to open an existing file. Locate and open the desired file. Upon opening, the application presents a tabular view for sheet selection within the Excel file.</p>
-                         <p class="step">The selected sheet's data will be displayed, and you are free to view or modify the content as required.</p>
-                     </div>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: "Segoe UI", sans-serif; font-size: 14px; }
+                        h2 { color: #333366; }
+                        b { font-weight: bold; color: #333366; }
+                        p { line-height: 1.6; }
+                        .instructions { margin-bottom: 15px; }
+                        .step { margin-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="instructions">
+                        <h2>Getting Started</h2>
+                        <p>Welcome to <b>Wisdom Waves</b>! To begin, navigate to the <b>Home</b> page by selecting <b>Open</b> to load an existing Excel or CSV file. You can find this option in the sidebar or through the 'File' menu at the top of the application
+                        once you load a file and enter the <b>Home</b>page (Main Page).</p>
+                        <p class="step">Once a file is opened, the application presents a tabular view where you can select different sheets within the file. The data from the selected sheet will be displayed, and you can review or edit this data as needed
+                        (Note: Editing data in the sheet works, but when graphing it does not.. updating the edited data has not been implemented).</p>
+                    </div>
                     
-                    <h2>Graphing</h2>
-                    <p>To visualize data, open the file and select the <b>Graph</b> option. A new window will emerge, showcasing a bar graph representing the selected dataset. This interactive graphing window enables you to specify parameters such as <b>SLO</b>, <b>Measure</b>, <b>Target</b>, and the desired <b>Year Range</b> for the graph.</p>
-                 </body>
-                 </html>
-             """)
+                    <h2>Graphing Data</h2>
+                    <p>For data visualization, after opening a file, navigate to the 'Graph' menu and choose <b>Show Graph</b>. This action opens a new window where you can interact with various graphing options.</p>
+                    <p>In the graphing window, you'll be able to select a<b>Maximum</b> of two <b>Sheets</b> and compare their data visually. The graph will update automatically to reflect the sheets.</p>
+                    <p class="step">Use the checkboxes to select or deselect specific sheets. If sheets have differing target values, they will be marked distinctly in the graph to help differentiate them. When no sheets are selected, the graph will be cleared.</p>
+                </body>
+                </html>""")
             self.helpTextLabel.setWordWrap(True)
             self.helpTextLayout.addWidget(self.helpTextLabel)
             
